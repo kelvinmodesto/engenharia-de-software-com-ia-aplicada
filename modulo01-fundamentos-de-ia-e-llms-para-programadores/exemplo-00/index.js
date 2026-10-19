@@ -1,6 +1,4 @@
 import tf from '@tensorflow/tfjs-node'
-const test = 'test'
-const test2 = 'test'
 
 async function predict(model, person) {
   // transformar arrar para tensor
