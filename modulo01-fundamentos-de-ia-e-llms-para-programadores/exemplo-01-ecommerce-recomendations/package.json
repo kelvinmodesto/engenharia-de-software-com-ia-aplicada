@@ -1,22 +1,28 @@
 {
-    "name": "ecommerce-recomendations-with-ml",
-    "version": "1.0.0",
-    "description": "An e-commerce recommendation system with TensorFlow.js",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "start": "browser-sync -w . --server --files 'index.html, data/*.json, js/*.js' --port 3000",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "ecommerce",
-        "tensorflow",
-        "recommendation",
-        "javascript"
-    ],
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "browser-sync": "^3.0.4"
-    }
+  "name": "ecommerce-recomendations-with-ml",
+  "version": "1.0.0",
+  "description": "An e-commerce recommendation system with TensorFlow.js",
+  "keywords": [
+    "ecommerce",
+    "javascript",
+    "recommendation",
+    "tensorflow"
+  ],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync -w . --server --files 'index.html, data/*.json, js/*.js' --port 3000",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "oxfmt": "^0.74.0",
+    "oxlint": "^1.89.0"
+  }
 }
