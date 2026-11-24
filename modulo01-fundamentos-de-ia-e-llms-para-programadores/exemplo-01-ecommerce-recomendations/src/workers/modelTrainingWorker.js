@@ -4,6 +4,13 @@ import { workerEvents } from '../events/constants.js'
 console.log('Model training worker initialized')
 let _globalCtx = {}
 
+const WEIGHTS = {
+  category: 0.4,
+  color: 0.3,
+  price: 0.2,
+  age: 0.1,
+}
+
 const normalize = (value, min, max) => (value - min) / (max - min || 1)
 
 function makeContext(products, users) {
@@ -55,6 +62,7 @@ function makeContext(products, users) {
     users,
     colorsIndex,
     categoriesIndex,
+    productAvgAgeNorm,
     minAge,
     maxAge,
     minPrice,
@@ -66,11 +74,40 @@ function makeContext(products, users) {
   }
 }
 
+const oneHotWeighted = (index, length, weight) =>
+  tf.oneHot(index, length).cast('float32').mul(weight)
+
+function encodeProduct(product, context) {
+  // normalizando dados para ficar entre 0 e 1
+  const price = tf.tensor1d([
+    normalize(product.price, context.minPrice, context.maxPrice) * WEIGHTS.price,
+  ])
+
+  const age = tf.tensor1d([(context.productAvgAgeNorm[product.name] ?? 0.5) * WEIGHTS.age])
+
+  const category = oneHotWeighted(
+    context.categoriesIndex[product.category],
+    context.numCategories,
+    WEIGHTS.category,
+  )
+
+  const color = oneHotWeighted(context.colorsIndex[product.color], context.numColors, WEIGHTS.color)
+
+  return tf.concat1d([price, age, category, color])
+}
+
 async function trainModel({ users }) {
   console.log('Training model with users:', users)
-  const catalog = await (await fetch('/data/products.json')).json()
+  const products = await (await fetch('/data/products.json')).json()
 
-  const context = makeContext(catalog, users)
+  const context = makeContext(products, users)
+  context.productVectors = products.map((product) => {
+    return {
+      name: product.name,
+      meta: { ...product },
+      vector: encodeProduct(product, context).dataSync(),
+    }
+  })
 
   _globalCtx = context
 
