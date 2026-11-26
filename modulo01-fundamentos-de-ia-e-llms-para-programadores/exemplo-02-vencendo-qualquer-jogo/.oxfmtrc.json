@@ -1,0 +1,9 @@
+{
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "none",
+  "arrowParens": "always",
+  "tabWidth": 2,
+  "printWidth": 100,
+  "ignorePatterns": ["dist/**", "vendor/**", "**/*.md"]
+}

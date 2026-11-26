@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import"],
+  "env": { "browser": true, "commonjs": true, "es6": true },
+  "globals": { "console": "readonly" },
+  "ignorePatterns": ["dist/**", "vendor/**"],
+  "rules": {
+    "no-console": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-spread": "error",
+    "constructor-super": "error",
+    "no-class-assign": "error",
+    "no-const-assign": "error",
+    "no-this-before-super": "error",
+    "require-yield": "error"
+  }
+}
